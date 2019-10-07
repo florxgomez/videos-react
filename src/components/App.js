@@ -2,13 +2,17 @@ import React from "react";
 import SearchBar from "./SearchBar";
 import youtube from "../apis/youtube";
 import VideoList from "./VideoList";
-import VideoDetail from './VideoDetail';
+import VideoDetail from "./VideoDetail";
 
 class App extends React.Component {
   state = {
     videos: [],
     selectedVideo: null,
   };
+
+  componentDidMount(){
+      this.onTermSubmit('green day');
+  }
 
   onTermSubmit = async term => {
     const response = await youtube.get("/search", {
@@ -19,6 +23,7 @@ class App extends React.Component {
 
     this.setState({
       videos: response.data.items,
+      selectedVideo: response.data.items[0]
     });
   };
 
@@ -30,14 +35,22 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className=" ui container">
-      <h2>Mini Youtube App</h2>
+      <div className="ui container">
+        <h2 style={{marginTop: 10}} className="ui red header">My Youtube App</h2>
         <SearchBar onTermSubmit={this.onTermSubmit} />
-        <VideoDetail video={this.state.selectedVideo}/>
-        <VideoList
-          videos={this.state.videos}
-          onVideoSelect={this.onVideoSelect}
-        />
+        <div className="ui grid stackable">
+          <div className="ui row">
+          <div className="eleven wide column">
+            <VideoDetail video={this.state.selectedVideo} />
+            </div>
+            <div className="five wide column">
+            <VideoList
+              videos={this.state.videos}
+              onVideoSelect={this.onVideoSelect}
+            />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
