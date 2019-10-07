@@ -31,6 +31,7 @@ class App extends React.Component {
   render() {
     return (
       <div className=" ui container">
+      <h2>Mini Youtube App</h2>
         <SearchBar onTermSubmit={this.onTermSubmit} />
         <VideoDetail video={this.state.selectedVideo}/>
         <VideoList
